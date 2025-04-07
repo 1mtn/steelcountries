@@ -173,14 +173,37 @@ st.pyplot(fig)
 
 st.markdown("""
            ## China's production appears to be the main driver in increasing world steel production
+Let's see how World's production and China's production correlate""")
 
-Let's see how China steel production compares to the other major steel producers over the years
-            __Use the slider to see how the production changes over the years__
+
+#Correlation Visualization
+
+china_prod = steel_clean.iloc[1]
+world_prod = steel_clean.iloc[0]
+
+china_world_corr = china_prod.corr(world_prod)
+
+fig, ax = plt.subplots(figsize=(14,10))
+ax.scatter(china_prod, world_prod)
+plt.xlabel("China's Steel Production")
+plt.ylabel("World's Total Steel Produciton")
+plt.title("World vs China Steel Production")
+ax.axhline(y=1830, xmin=0.05, xmax=0.61,
+           linewidth=95, color='black', alpha=0.1)
+ax.text(350, 1750, "Correlation between World's production \nand China's production is \nextremely high at 0.99", fontsize=20, color = 'red', ha='center')
+st.pyplot(fig)
+
+
+
+#Visualize by year
+
+st.markdown("""
+Let's see how China steel production in 2021 compares to the other major steel producers.
+            __Use the slider to see earlier years__
             """)
 
-
 years = list(steel_clean.columns)
-year = st.select_slider('Year', years)
+year = st.select_slider('Year', years, value="2021")
 new = steel_clean[year].reset_index()
 
 fig, ax = plt.subplots(figsize=(7,12))
